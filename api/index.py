@@ -5,15 +5,18 @@ import json
 
 app = FastAPI()
 
-# Enable CORS for all origins, all methods, all headers
+# Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # allow requests from any origin
-    allow_credentials=True,
-    allow_methods=["*"],  # allow POST, GET, etc.
-    allow_headers=["*"],  # allow all headers
-    expose_headers=["*"]
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
+# OPTIONS handler
+@app.options("/analytics")
+async def options_handler():
+    return {}
 
 # Load telemetry JSON
 with open("q-vercel-latency.json", "r") as f:
@@ -41,4 +44,3 @@ async def analytics(request: Request):
             "breaches": sum(l > threshold for l in latencies),
         }
     return result
-
