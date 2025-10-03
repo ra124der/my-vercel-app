@@ -9,8 +9,10 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # allow requests from any origin
+    allow_credentials=True,
     allow_methods=["*"],  # allow POST, GET, etc.
     allow_headers=["*"],  # allow all headers
+    expose_headers=["*"]
 )
 
 # Load telemetry JSON
